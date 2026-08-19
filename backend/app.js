@@ -12,20 +12,21 @@ const app = express();
 // Security headers
 app.use(helmet());
 
-// Configure CORS: allow wide-open in development, restrict in production
-if (process.env.NODE_ENV === 'production') {
-    const allowed = process.env.FRONTEND_URL || '';
-    app.use(
-        cors({
-            origin: function (origin, callback) {
-                if (!origin || origin === allowed) return callback(null, true);
-                return callback(new Error('Not allowed by CORS'));
-            },
-        }),
-    );
-} else {
-    app.use(cors());
-}
+// Allow the local frontend and the deployed frontend without using a wildcard in production.
+const allowedOrigins = new Set(
+    ["http://localhost:5173", process.env.FRONTEND_URL]
+        .filter(Boolean)
+        .flatMap((value) => value.split(",").map((origin) => origin.trim()))
+);
+
+app.use(
+    cors({
+        origin: (origin, callback) => {
+            if (!origin || allowedOrigins.has(origin)) return callback(null, true);
+            return callback(new Error("Not allowed by CORS"));
+        },
+    })
+);
 
 // Limit request body size to prevent accidental large payloads
 app.use(express.json({ limit: '100kb' }));
@@ -57,4 +58,11 @@ app.use((err, req, res, next) => {
     if (res.headersSent) return next(err);
 
     res.status(500).json({ success: false, message: 'Internal server error.' });
+});
+
+app.get("/api/health", (req, res) => {
+    res.json({
+        success: true,
+        message: "CivicAI backend is running",
+    });
 });
