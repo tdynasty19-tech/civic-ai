@@ -1,0 +1,19 @@
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+
+# Frontend build
+frontend/dist/
+
+# Logs
+logs
+*.log
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
