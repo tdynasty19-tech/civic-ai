@@ -180,8 +180,9 @@ export function AnalyzePage() {
         // ignore history failures
       }
     } catch (err: any) {
-      const message = err && err.message ? err.message : 'Something went wrong. Please try again.'
-      setError(message)
+      const message = err && typeof err.message === 'string' ? err.message : ''
+      const isUserFacingMessage = message && !/runtime|undefined|null|cannot read|is not a function/i.test(message)
+      setError(isUserFacingMessage ? message : 'We could not complete the analysis right now. Please try again.')
       setResult(null)
     } finally {
       setLoading(false)
@@ -432,7 +433,7 @@ export function AnalyzePage() {
               </>
             ) : (
               <>
-                Analyze Situation
+                {error ? 'Try Again' : 'Analyze Situation'}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </>
             )}
