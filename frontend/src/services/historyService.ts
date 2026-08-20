@@ -13,7 +13,7 @@ const nowId = () => String(Date.now())
 
 export const getHistory = (): HistoryItem[] => {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
+      const raw = sessionStorage.getItem(STORAGE_KEY)
     if (!raw) return []
     const parsed = JSON.parse(raw)
     if (!Array.isArray(parsed)) return []
@@ -25,7 +25,7 @@ export const getHistory = (): HistoryItem[] => {
 
 const persist = (items: HistoryItem[]) => {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(items))
   } catch {
     // ignore storage errors
   }
