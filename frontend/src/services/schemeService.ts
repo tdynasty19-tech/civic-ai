@@ -11,6 +11,8 @@ export interface SchemeMatch {
 
 import { FetchTimeoutError, fetchWithTimeout } from './fetchWithTimeout'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'
+
 interface SchemesApiResponse {
   success: boolean
   data?: { matches: SchemeMatch[] }
@@ -33,7 +35,7 @@ export async function findSchemes(
 
   let response: Response
   try {
-    response = await fetchWithTimeout('http://localhost:8000/api/schemes', {
+    response = await fetchWithTimeout(`${API_BASE_URL}/schemes`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),

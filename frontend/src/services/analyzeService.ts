@@ -18,12 +18,14 @@ interface AnalyzeApiResponse {
 
 import { FetchTimeoutError, fetchWithTimeout } from './fetchWithTimeout'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'
+
 export async function analyzeProblem(problem: string, language: 'en' | 'hi' = 'en'): Promise<AnalyzeResult> {
   const trimmedProblem = problem.trim()
 
   let response: Response
   try {
-    response = await fetchWithTimeout('http://localhost:8000/api/analyze', {
+    response = await fetchWithTimeout(`${API_BASE_URL}/analyze`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ problem: trimmedProblem, language }),

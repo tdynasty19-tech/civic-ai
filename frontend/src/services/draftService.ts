@@ -9,6 +9,8 @@ export interface DraftResult {
 
 import { FetchTimeoutError, fetchWithTimeout } from './fetchWithTimeout'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'
+
 interface DraftApiResponse {
   success: boolean
   data?: DraftResult
@@ -32,7 +34,7 @@ export async function generateDraft(payload: {
 
   let response: Response
   try {
-    response = await fetchWithTimeout('http://localhost:8000/api/draft', {
+    response = await fetchWithTimeout(`${API_BASE_URL}/draft`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
