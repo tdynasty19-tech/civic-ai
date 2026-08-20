@@ -8,7 +8,6 @@ export interface DraftResult {
 }
 
 import { FetchTimeoutError, fetchWithTimeout } from './fetchWithTimeout'
-import { API_BASE_URL } from './api'
 
 interface DraftApiResponse {
   success: boolean
@@ -33,7 +32,7 @@ export async function generateDraft(payload: {
 
   let response: Response
   try {
-    response = await fetchWithTimeout(`${API_BASE_URL}/draft`, {
+    response = await fetchWithTimeout('http://localhost:8000/api/draft', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),

@@ -17,14 +17,13 @@ interface AnalyzeApiResponse {
 }
 
 import { FetchTimeoutError, fetchWithTimeout } from './fetchWithTimeout'
-import { API_BASE_URL } from './api'
 
 export async function analyzeProblem(problem: string, language: 'en' | 'hi' = 'en'): Promise<AnalyzeResult> {
   const trimmedProblem = problem.trim()
 
   let response: Response
   try {
-    response = await fetchWithTimeout(`${API_BASE_URL}/analyze`, {
+    response = await fetchWithTimeout('http://localhost:8000/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ problem: trimmedProblem, language }),

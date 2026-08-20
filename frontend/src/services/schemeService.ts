@@ -10,7 +10,6 @@ export interface SchemeMatch {
 }
 
 import { FetchTimeoutError, fetchWithTimeout } from './fetchWithTimeout'
-import { API_BASE_URL } from './api'
 
 interface SchemesApiResponse {
   success: boolean
@@ -34,7 +33,7 @@ export async function findSchemes(
 
   let response: Response
   try {
-    response = await fetchWithTimeout(`${API_BASE_URL}/schemes`, {
+    response = await fetchWithTimeout('http://localhost:8000/api/schemes', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
